@@ -12,9 +12,11 @@ navbar:
       href: DataAggregation.html
     - text: "Data Reshaping"
       href: DataReshaping.html
-    - text: "DataAggregate Exercise"
-      href: DataAggregate_Exercise.html
     - text: "DataFiltering Exercise"
       href: DataFiltering_Exercise.html
+    - text: "DataAggregate Exercise"
+      href: DataAggregate_Exercise.html
+    - text: "DataReshaping Exercise"
+      href: DataReshaping_Exercise.html
     - text: "About"
       href: about.html

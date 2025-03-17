@@ -2,7 +2,7 @@ SET DECIMAL=DOT.
 
 DATA LIST FILE= "./../RUltimateMaterial-main/data/Affairs.sps"  free (",")
 ENCODING="Locale"
-/ V1 (A47) 
+/ V1 (A50) 
   .
 
 VARIABLE LABELS

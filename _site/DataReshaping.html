@@ -9,7 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Hendrilalaina" />
 
+<meta name="date" content="2025-03-17" />
 
 <title>Data Reshaping</title>
 
@@ -338,10 +340,13 @@ div.tocify {
   <a href="DataReshaping.html">Data Reshaping</a>
 </li>
 <li>
+  <a href="DataFiltering_Exercise.html">DataFiltering Exercise</a>
+</li>
+<li>
   <a href="DataAggregate_Exercise.html">DataAggregate Exercise</a>
 </li>
 <li>
-  <a href="DataFiltering_Exercise.html">DataFiltering Exercise</a>
+  <a href="DataReshaping_Exercise.html">DataReshaping Exercise</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -367,17 +372,19 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Data Reshaping</h1>
+<h4 class="author">Hendrilalaina</h4>
+<h4 class="date">2025-03-17</h4>
 
 </div>
 
 
-<div id="packages" class="section level1">
-<h1>Packages</h1>
+<div id="packages" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Packages</h1>
 <pre class="r"><code>suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyr))</code></pre>
 </div>
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
+<div id="introduction" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Introduction</h1>
 <p>Data can be reshaped by</p>
 <ul>
 <li><p>transforming columns into rows</p></li>
@@ -389,8 +396,9 @@ suppressPackageStartupMessages(library(tidyr))</code></pre>
              english = c(3, 1, 2),
              history = c(3, 2, 1))</code></pre>
 </div>
-<div id="from-wide-to-tidy-data" class="section level1">
-<h1>From Wide to Tidy-Data</h1>
+<div id="from-wide-to-tidy-data" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> From Wide to
+Tidy-Data</h1>
 <p>If you want to transform data from wide to tidy you can use functions
 from package <strong>tidyr</strong>. The relevant function is
 <em>gather()</em>. You need to provide some parameters</p>
@@ -416,8 +424,9 @@ school_tidy</code></pre>
 ## 8  John history     2
 ## 9 David history     1</code></pre>
 </div>
-<div id="from-tidy-to-wide-data" class="section level1">
-<h1>From Tidy to Wide-Data</h1>
+<div id="from-tidy-to-wide-data" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> From Tidy to
+Wide-Data</h1>
 <p>The function with the opposite effect is <em>spread()</em>. You need
 to pass the exact same parameters:</p>
 <ul>
@@ -433,14 +442,18 @@ school_wide</code></pre>
 ## 2 David       2       1       4
 ## 3  John       1       2       3</code></pre>
 </div>
-<div id="why-are-there-two-different-formats" class="section level1">
-<h1>Why are there two different formats?</h1>
+<div id="why-are-there-two-different-formats" class="section level1"
+number="5">
+<h1><span class="header-section-number">5</span> Why are there two
+different formats?</h1>
 <p>Both have their right to exist. Wide data typically comes from other
 programs. Excel or SPSS usually work with wide-data.</p>
 <p>For specific tasks it is better to transform wide-data (also called
 messy data) into tidy-data. I will show two examples.</p>
-<div id="example-1-calculate-group-averages" class="section level2">
-<h2>Example 1: Calculate group averages</h2>
+<div id="example-1-calculate-group-averages" class="section level2"
+number="5.1">
+<h2><span class="header-section-number">5.1</span> Example 1: Calculate
+group averages</h2>
 <p>Assume you want to calculate average class-grades per subject. With
 wide data you would do something like this:</p>
 <pre class="r"><code>mean(school_wide$english)</code></pre>
@@ -468,8 +481,10 @@ tidy-data.</p>
 ## 2 history          2
 ## 3 science          3</code></pre>
 </div>
-<div id="example-2-plotting-with-ggplot2" class="section level2">
-<h2>Example 2: Plotting with ggplot2</h2>
+<div id="example-2-plotting-with-ggplot2" class="section level2"
+number="5.2">
+<h2><span class="header-section-number">5.2</span> Example 2: Plotting
+with ggplot2</h2>
 <p>Assume you want to plot the results with ggplot2. This is done with
 three lines of code. Trying to get a similar representation based on
 wide-data will result in much more complex code.</p>
@@ -481,8 +496,8 @@ g</code></pre>
 <p><img src="DataReshaping_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 </div>
-<div id="conclusion" class="section level1">
-<h1>Conclusion</h1>
+<div id="conclusion" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Conclusion</h1>
 <p>You have seen how easy it is to transform data from wide to tidy, and
 reverse. You also saw some examples in which tidy-data has advantages
 over wide-data.</p>

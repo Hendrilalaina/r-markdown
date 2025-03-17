@@ -9,11 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Hendrilalaina" />
+<meta name="author" content="Bert" />
 
-<meta name="date" content="2025-03-17" />
 
-<title>Import/Export</title>
+<title>Data Filtering: Exercise</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -334,6 +333,9 @@ div.tocify {
   <a href="DataFiltering.html">DataFiltering</a>
 </li>
 <li>
+  <a href="DataFiltering_Exercise.html">DataFiltering Exercice</a>
+</li>
+<li>
   <a href="about.html">About</a>
 </li>
       </ul>
@@ -356,89 +358,198 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Import/Export</h1>
-<h4 class="author">Hendrilalaina</h4>
-<h4 class="date">2025-03-17</h4>
+<h1 class="title toc-ignore">Data Filtering: Exercise</h1>
+<h4 class="author">Bert</h4>
+<h4 class="date">18 März 2019</h4>
 
 </div>
 
 
-<div id="import" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Import</h1>
-<div id="csv" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> CSV</h2>
-<p>This is the import of “Affairs.csv”</p>
-<pre class="r"><code>library(readr)
-affairs_csv &lt;- read_csv(file = &quot;./../RUltimateMaterial-main/data/Affairs.csv&quot;)</code></pre>
-<pre><code>## Rows: 601 Columns: 9
-## ── Column specification ────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (2): sex, child
-## dbl (7): age, ym, religious, education, occupation, rate, nbaffairs
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>View(affairs_csv)</code></pre>
+<pre class="r"><code>library(dplyr)
+library(babynames)</code></pre>
+<p>In this exercise you will work extensively on dplyr filtering and
+selection.</p>
+<div id="data-preparation" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Data Preparation</h1>
+<p>We will work with dataset “babynames” from the package with the same
+name.</p>
+<pre class="r"><code>data(&quot;babynames&quot;)
+babynames %&gt;% 
+  glimpse</code></pre>
+<pre><code>## Rows: 1,924,665
+## Columns: 5
+## $ year &lt;dbl&gt; 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880,…
+## $ sex  &lt;chr&gt; &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, &quot;F&quot;, …
+## $ name &lt;chr&gt; &quot;Mary&quot;, &quot;Anna&quot;, &quot;Emma&quot;, &quot;Elizabeth&quot;, &quot;Minnie&quot;, &quot;Margaret&quot;, &quot;Ida&quot;,…
+## $ n    &lt;int&gt; 7065, 2604, 2003, 1939, 1746, 1578, 1472, 1414, 1320, 1288, 1258,…
+## $ prop &lt;dbl&gt; 0.07238359, 0.02667896, 0.02052149, 0.01986579, 0.01788843, 0.016…</code></pre>
+<pre class="r"><code>summary(babynames)</code></pre>
+<pre><code>##       year          sex                name                 n          
+##  Min.   :1880   Length:1924665     Length:1924665     Min.   :    5.0  
+##  1st Qu.:1951   Class :character   Class :character   1st Qu.:    7.0  
+##  Median :1985   Mode  :character   Mode  :character   Median :   12.0  
+##  Mean   :1975                                         Mean   :  180.9  
+##  3rd Qu.:2003                                         3rd Qu.:   32.0  
+##  Max.   :2017                                         Max.   :99686.0  
+##       prop          
+##  Min.   :2.260e-06  
+##  1st Qu.:3.870e-06  
+##  Median :7.300e-06  
+##  Mean   :1.363e-04  
+##  3rd Qu.:2.288e-05  
+##  Max.   :8.155e-02</code></pre>
 </div>
-<div id="excel" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Excel</h2>
-<p>This is the import of “Affaires.xlsx”</p>
-<pre class="r"><code>library(readxl)
-affairs_xlsx &lt;- read_excel(&quot;./../RUltimateMaterial-main/data/Affairs.xlsx&quot;)
-View(affairs_xlsx)</code></pre>
-</div>
-<div id="json" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> JSON</h2>
-<p>JSON is a JavaScript Object Notation</p>
-<pre class="r"><code>library(jsonlite)
-affairs_json &lt;- read_json(path = &quot;./../RUltimateMaterial-main/data/Affairs.JSON&quot;, simplifyVector = T)
-View(affairs_json)</code></pre>
-</div>
-<div id="spss" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> SPSS</h2>
-<p>SPSS is a statistical program with its own file format.</p>
-<pre class="r"><code>library(foreign)
-affairs_spss &lt;- read.table(&quot;./../RUltimateMaterial-main/data/Affairs.sps&quot;)
-View(affairs_spss)</code></pre>
-</div>
-<div id="rda" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> RDA</h2>
-<p>RDA is a native R format, which provides compression. RDA saves the
-object names and can store more than just one object.</p>
-<pre class="r"><code>load(file = &quot;./../RUltimateMaterial-main/data/Affairs.RDA&quot;)</code></pre>
-</div>
-<div id="rds" class="section level2" number="1.6">
-<h2><span class="header-section-number">1.6</span> RDS</h2>
-<p>RDS is the new native R format. RDS does not store the object name
-and can only contain one object. It has a slightly better compression
-rate compared to RDA.</p>
-<pre class="r"><code>affairs_rds &lt;- readRDS(&quot;./../RUltimateMaterial-main/data/Affairs.RDS&quot;)
-View(affairs_rds)</code></pre>
-</div>
-</div>
-<div id="export" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Export</h1>
-<div id="csv-1" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> CSV</h2>
-<p>Export of “affairs_csv”</p>
-<pre class="r"><code>write.csv(x = affairs_csv, file = &quot;./export/Affairs.csv&quot;)</code></pre>
-</div>
-<div id="json-1" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> JSON</h2>
-<p>Export of “affairs_json”</p>
-<pre class="r"><code>write_json(x = affairs_json, path = &quot;./export/Affairs.json&quot;)</code></pre>
-</div>
-<div id="spss-1" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> SPSS</h2>
-<p>Export of “affairs_spss”</p>
-<pre class="r"><code>write.foreign(affairs_spss, datafile = &quot;./../RUltimateMaterial-main/data/Affairs.sps&quot;, codefile = &quot;./export/Affairs.code&quot;, package = &quot;SPSS&quot;)</code></pre>
-</div>
-<div id="rda-and-rds" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> RDA and RDS</h2>
-<p>RDA and RDS are native R formats, which store data compressed.</p>
-<pre class="r"><code>save(affairs_csv, file = &quot;./export/Affairs.RDA&quot;)
-saveRDS(affairs_csv, file = &quot;./export/Affairs.RDS&quot;)</code></pre>
-</div>
+<div id="filtering" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Filtering</h1>
+<ol style="list-style-type: decimal">
+<li>Filter for year 2015.</li>
+</ol>
+<pre class="r"><code>babynames_filt &lt;- babynames %&gt;%
+  filter(year == 2015)
+babynames_filt</code></pre>
+<pre><code>## # A tibble: 33,098 × 5
+##     year sex   name          n    prop
+##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;   &lt;dbl&gt;
+##  1  2015 F     Emma      20435 0.0105 
+##  2  2015 F     Olivia    19669 0.0101 
+##  3  2015 F     Sophia    17402 0.00895
+##  4  2015 F     Ava       16361 0.00841
+##  5  2015 F     Isabella  15594 0.00802
+##  6  2015 F     Mia       14892 0.00766
+##  7  2015 F     Abigail   12390 0.00637
+##  8  2015 F     Emily     11780 0.00606
+##  9  2015 F     Charlotte 11390 0.00586
+## 10  2015 F     Harper    10291 0.00529
+## # ℹ 33,088 more rows</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Filter for all names that have a capital letter “B”. Help: take a
+look at “str_detect()”.</li>
+</ol>
+<pre class="r"><code>library(stringr)
+babynames_filt &lt;- babynames %&gt;%
+  filter(str_detect(name, &#39;B&#39;))
+babynames_filt</code></pre>
+<pre><code>## # A tibble: 78,281 × 5
+##     year sex   name         n     prop
+##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;
+##  1  1880 F     Bertha    1320 0.0135  
+##  2  1880 F     Bessie     796 0.00816 
+##  3  1880 F     Blanche    427 0.00437 
+##  4  1880 F     Belle      238 0.00244 
+##  5  1880 F     Beulah     131 0.00134 
+##  6  1880 F     Barbara    127 0.00130 
+##  7  1880 F     Betty      117 0.00120 
+##  8  1880 F     Bettie     113 0.00116 
+##  9  1880 F     Beatrice    87 0.000891
+## 10  1880 F     Birdie      85 0.000871
+## # ℹ 78,271 more rows</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Filter for male names.</li>
+</ol>
+<pre class="r"><code>babynames_filt &lt;- babynames %&gt;%
+  filter(sex == &#39;M&#39;) %&gt;%
+  select(name)
+babynames_filt</code></pre>
+<pre><code>## # A tibble: 786,372 × 1
+##    name   
+##    &lt;chr&gt;  
+##  1 John   
+##  2 William
+##  3 James  
+##  4 Charles
+##  5 George 
+##  6 Frank  
+##  7 Joseph 
+##  8 Thomas 
+##  9 Henry  
+## 10 Robert 
+## # ℹ 786,362 more rows</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Take only names into account which have more than 100
+observations.</li>
+</ol>
+<pre class="r"><code>babynames_filt &lt;- babynames %&gt;%
+  filter(n &gt; 100) %&gt;%
+  select(name)
+babynames_filt</code></pre>
+<pre><code>## # A tibble: 230,074 × 1
+##    name     
+##    &lt;chr&gt;    
+##  1 Mary     
+##  2 Anna     
+##  3 Emma     
+##  4 Elizabeth
+##  5 Minnie   
+##  6 Margaret 
+##  7 Ida      
+##  8 Alice    
+##  9 Bertha   
+## 10 Sarah    
+## # ℹ 230,064 more rows</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Show the Top 10 in decreasing order.</li>
+</ol>
+<pre class="r"><code>babynames_filt &lt;- babynames %&gt;%
+  arrange(desc(n)) %&gt;%
+  top_n(10)
+babynames_filt</code></pre>
+<pre><code>## # A tibble: 10 × 5
+##     year sex   name        n   prop
+##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;int&gt;  &lt;dbl&gt;
+##  1  1880 M     John     9655 0.0815
+##  2  1882 M     John     9557 0.0783
+##  3  1880 M     William  9532 0.0805
+##  4  1884 M     John     9388 0.0765
+##  5  1882 M     William  9298 0.0762
+##  6  1886 M     John     9026 0.0758
+##  7  1883 M     John     8894 0.0791
+##  8  1881 M     John     8769 0.0810
+##  9  1885 M     John     8756 0.0755
+## 10  1881 M     William  8524 0.0787</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Keep only the columns “name” and “prop”</li>
+</ol>
+<pre class="r"><code>babynames_filt &lt;- babynames %&gt;%
+  select(name, prop)
+babynames_filt</code></pre>
+<pre><code>## # A tibble: 1,924,665 × 2
+##    name        prop
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 Mary      0.0724
+##  2 Anna      0.0267
+##  3 Emma      0.0205
+##  4 Elizabeth 0.0199
+##  5 Minnie    0.0179
+##  6 Margaret  0.0162
+##  7 Ida       0.0151
+##  8 Alice     0.0145
+##  9 Bertha    0.0135
+## 10 Sarah     0.0132
+## # ℹ 1,924,655 more rows</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>All in one</li>
+</ol>
+<pre class="r"><code>babynames_filt &lt;- babynames %&gt;%
+  filter(year == 2015)  %&gt;%
+  filter(str_detect(name, &#39;B&#39;)) %&gt;%
+  filter(n &gt; 100) %&gt;%
+  arrange(desc(n)) %&gt;%
+  top_n(10) %&gt;%
+  select(name, prop)
+babynames_filt</code></pre>
+<pre><code>## # A tibble: 10 × 2
+##    name        prop
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 Benjamin 0.00672
+##  2 Brooklyn 0.00324
+##  3 Brayden  0.00307
+##  4 Brandon  0.00250
+##  5 Bentley  0.00211
+##  6 Blake    0.00207
+##  7 Bella    0.00195
+##  8 Brody    0.00183
+##  9 Brianna  0.00178
+## 10 Braxton  0.00162</code></pre>
 </div>
 
 
@@ -478,7 +589,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
+  window.initializeCodeFolding("hide" === "show");
 });
 </script>
 

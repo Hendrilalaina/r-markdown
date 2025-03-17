@@ -8,5 +8,7 @@ navbar:
       href: ImportData.html
     - text: "DataFiltering"
       href: DataFiltering.html
+    - text: "DataFiltering Exercice"
+      href: DataFiltering_Exercise.html
     - text: "About"
       href: about.html

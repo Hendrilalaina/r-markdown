@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = T, warning = F, message = F)
 ```
 
 ```{r}
-library(tidyverse)
+library(dplyr)
 library(babynames)
 ```
 
@@ -27,7 +27,8 @@ We will work with dataset "babynames" from the package with the same name.
 
 ```{r}
 data("babynames")
-babynames %>% glimpse
+babynames %>% 
+  glimpse
 summary(babynames)
 ```
 
@@ -43,6 +44,7 @@ babynames_filt
 
 2. Filter for all names that have a capital letter "B". Help: take a look at "str_detect()".
 ```{r}
+library(stringr)
 babynames_filt <- babynames %>%
   filter(str_detect(name, 'B'))
 babynames_filt
@@ -80,6 +82,18 @@ babynames_filt
 
 ```{r}
 babynames_filt <- babynames %>%
+  select(name, prop)
+babynames_filt
+```
+
+7. All in one
+```{r}
+babynames_filt <- babynames %>%
+  filter(year == 2015)  %>%
+  filter(str_detect(name, 'B')) %>%
+  filter(n > 100) %>%
+  arrange(desc(n)) %>%
+  top_n(10) %>%
   select(name, prop)
 babynames_filt
 ```

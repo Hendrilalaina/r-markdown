@@ -1,0 +1,10 @@
+name: "my-website"
+navbar:
+  title: "R Markdown"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Import/Export"
+      href: ImportData.html
+    - text: "About"
+      href: about.html

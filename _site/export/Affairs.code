@@ -1,0 +1,12 @@
+SET DECIMAL=DOT.
+
+DATA LIST FILE= "./../RUltimateMaterial-main/data/Affairs.sps"  free (",")
+ENCODING="Locale"
+/ V1 (A32) 
+  .
+
+VARIABLE LABELS
+V1 "V1" 
+ .
+
+EXECUTE.

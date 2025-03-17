@@ -1,0 +1,102 @@
+---
+title: "R Markdown"
+author: "Hendrilalaina"
+date: "2025-03-17"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Import
+
+## CSV
+
+This is the import of "Affairs.csv"
+
+```{r}
+library(readr)
+affairs_csv <- read_csv(file = "./../RUltimateMaterial-main/data/Affairs.csv")
+View(affairs_csv)
+```
+
+## Excel
+
+This is the import of "Affaires.xlsx"
+
+```{r}
+library(readxl)
+affairs_xlsx <- read_excel("./../RUltimateMaterial-main/data/Affairs.xlsx")
+View(affairs_xlsx)
+```
+
+## JSON
+JSON is a JavaScript Object Notation
+```{r}
+library(jsonlite)
+affairs_json <- read_json(path = "./../RUltimateMaterial-main/data/Affairs.JSON", simplifyVector = T)
+View(affairs_json)
+```
+
+## SPSS
+
+SPSS is a statistical program with its own file format.
+
+```{r}
+library(foreign)
+affairs_spss <- read.table("./../RUltimateMaterial-main/data/Affairs.sps")
+View(affairs_spss)
+```
+
+## RDA
+
+RDA is a native R format, which provides compression. RDA saves the object names and can store more than just one object.
+
+```{r}
+load(file = "./../RUltimateMaterial-main/data/Affairs.RDA")
+```
+
+## RDS
+
+RDS is the new native R format. RDS does not store the object name and can only contain one object. It has a slightly better compression rate compared to RDA.
+
+```{r}
+affairs_rds <- readRDS("./../RUltimateMaterial-main/data/Affairs.RDS")
+View(affairs_rds)
+```
+
+# Export
+
+## CSV
+Export of "affairs_csv"
+```{r}
+write.csv(x = affairs_csv, file = "./export/Affairs.csv")
+```
+
+## JSON
+Export of "affairs_json"
+```{r}
+write_json(x = affairs_json, path = "./export/Affairs.json")
+```
+
+## SPSS
+Export of "affairs_spss"
+```{r}
+write.foreign(affairs_spss, datafile = "./../RUltimateMaterial-main/data/Affairs.sps", codefile = "./export/Affairs.code", package = "SPSS")
+```
+
+## RDA and RDS
+RDA and RDS are native R formats, which store data compressed.
+```{r}
+save(affairs_csv, file = "./export/Affairs.RDA")
+saveRDS(affairs_csv, file = "./export/Affairs.RDS")
+```
+
+

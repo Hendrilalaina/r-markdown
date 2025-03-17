@@ -11,7 +11,7 @@
 
 
 
-<title>My practice in R Markdown</title>
+<title>Aggregating Exercise</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -219,6 +222,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -226,6 +292,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -275,15 +351,110 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">My practice in R Markdown</h1>
+<h1 class="title toc-ignore">Aggregating Exercise</h1>
 
 </div>
 
 
+<pre class="r"><code>library(tidyr)
+library(dplyr)
+library(ggplot2)</code></pre>
+<div id="data-preparation" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Data Preparation</h1>
+</div>
+<div id="exercise" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Exercise</h1>
+<ul>
+<li>Load the dataset “txhousing”, which holds information on Texas
+housing market.</li>
+</ul>
+<pre class="r"><code>data(&quot;txhousing&quot;)
+txhousing %&gt;% 
+  head</code></pre>
+<pre><code>## # A tibble: 6 × 9
+##   city     year month sales   volume median listings inventory  date
+##   &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+## 1 Abilene  2000     1    72  5380000  71400      701       6.3 2000 
+## 2 Abilene  2000     2    98  6505000  58700      746       6.6 2000.
+## 3 Abilene  2000     3   130  9285000  58100      784       6.8 2000.
+## 4 Abilene  2000     4    98  9730000  68600      785       6.9 2000.
+## 5 Abilene  2000     5   141 10590000  67300      794       6.8 2000.
+## 6 Abilene  2000     6   156 13910000  66900      780       6.6 2000.</code></pre>
+<ul>
+<li>Calculate the average sales for each city. During the calculation of
+mean values the result is coerced to NA, if there is a single NA
+present. Disable this functionality and change it so that missing values
+are excluded.</li>
+</ul>
+<pre class="r"><code>txhousing_filt &lt;- txhousing %&gt;%
+  filter(is.na(x = txhousing[&#39;sales&#39;]))
+txhousing_filt</code></pre>
+<pre><code>## # A tibble: 568 × 9
+##    city             year month sales volume median listings inventory  date
+##    &lt;chr&gt;           &lt;int&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+##  1 Brazoria County  2001    10    NA     NA     NA       NA        NA 2002.
+##  2 Brazoria County  2003     1    NA     NA     NA       NA        NA 2003 
+##  3 Brazoria County  2003     2    NA     NA     NA       NA        NA 2003.
+##  4 Brazoria County  2003     3    NA     NA     NA       NA        NA 2003.
+##  5 Brazoria County  2003     4    NA     NA     NA       NA        NA 2003.
+##  6 Brazoria County  2003     5    NA     NA     NA       NA        NA 2003.
+##  7 Brazoria County  2003     6    NA     NA     NA       NA        NA 2003.
+##  8 Brazoria County  2003     7    NA     NA     NA       NA        NA 2004.
+##  9 Brazoria County  2003     8    NA     NA     NA       NA        NA 2004.
+## 10 Brazoria County  2003     9    NA     NA     NA       NA        NA 2004.
+## # ℹ 558 more rows</code></pre>
+<pre class="r"><code>txhousing_filt &lt;- txhousing %&gt;%
+  group_by(city) %&gt;%
+  summarise(mean = mean(sales, na.rm = T))
+txhousing_filt</code></pre>
+<pre><code>## # A tibble: 46 × 2
+##    city                    mean
+##    &lt;chr&gt;                  &lt;dbl&gt;
+##  1 Abilene                150. 
+##  2 Amarillo               239. 
+##  3 Arlington              424. 
+##  4 Austin                1997. 
+##  5 Bay Area               503. 
+##  6 Beaumont               177. 
+##  7 Brazoria County         94.2
+##  8 Brownsville             65.5
+##  9 Bryan-College Station  187. 
+## 10 Collin County         1085. 
+## # ℹ 36 more rows</code></pre>
+<ul>
+<li>Calculate the average sales for city and year and save it in object
+“tx_city_year”.</li>
+</ul>
+<pre class="r"><code>tx_city_year &lt;- txhousing %&gt;%
+  group_by(city, year) %&gt;%
+  summarise(mean_sales = mean(sales, na.rm = TRUE))
+tx_city_year  </code></pre>
+<pre><code>## # A tibble: 736 × 3
+## # Groups:   city [46]
+##    city     year mean_sales
+##    &lt;chr&gt;   &lt;int&gt;      &lt;dbl&gt;
+##  1 Abilene  2000       115.
+##  2 Abilene  2001       119.
+##  3 Abilene  2002       126.
+##  4 Abilene  2003       136 
+##  5 Abilene  2004       152.
+##  6 Abilene  2005       165.
+##  7 Abilene  2006       166.
+##  8 Abilene  2007       167.
+##  9 Abilene  2008       138.
+## 10 Abilene  2009       136.
+## # ℹ 726 more rows</code></pre>
+<p>Plot the data with ggplot:</p>
+<pre class="r"><code>ggplot(tx_city_year, aes(x = year, y = mean_sales, col = city)) + 
+   geom_line() + 
+  labs(x = &quot;Year&quot;, y = &quot;Mean Sales&quot;, title = &quot;Average Sales per Year and City&quot;)</code></pre>
+<p><img src="DataAggregate_Exercise_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
 
 
 
-
+</div>
+</div>
 
 </div>
 
@@ -316,6 +487,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

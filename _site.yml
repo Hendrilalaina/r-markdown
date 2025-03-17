@@ -8,9 +8,11 @@ navbar:
       href: ImportData.html
     - text: "DataFiltering"
       href: DataFiltering.html
-    - text: "DataAgregation"
-      href: DataAgregation.html
-    - text: "DataFiltering Exercice"
+    - text: "DataAggregation"
+      href: DataAggregation.html
+    - text: "DataAggregate Exercise"
+      href: DataAggregate_Exercise.html
+    - text: "DataFiltering Exercise"
       href: DataFiltering_Exercise.html
     - text: "About"
       href: about.html

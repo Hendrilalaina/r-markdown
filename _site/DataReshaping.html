@@ -9,11 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Hendrilalaina" />
 
-<meta name="date" content="2025-03-17" />
 
-<title>Import/Export</title>
+<title>Data Reshaping</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -368,89 +366,126 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Import/Export</h1>
-<h4 class="author">Hendrilalaina</h4>
-<h4 class="date">2025-03-17</h4>
+<h1 class="title toc-ignore">Data Reshaping</h1>
 
 </div>
 
 
-<div id="import" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Import</h1>
-<div id="csv" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> CSV</h2>
-<p>This is the import of “Affairs.csv”</p>
-<pre class="r"><code>library(readr)
-affairs_csv &lt;- read_csv(file = &quot;./../RUltimateMaterial-main/data/Affairs.csv&quot;)</code></pre>
-<pre><code>## Rows: 601 Columns: 9
-## ── Column specification ────────────
-## Delimiter: &quot;,&quot;
-## chr (2): sex, child
-## dbl (7): age, ym, religious, education, occupation, rate, nbaffairs
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>View(affairs_csv)</code></pre>
+<div id="packages" class="section level1">
+<h1>Packages</h1>
+<pre class="r"><code>suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))</code></pre>
 </div>
-<div id="excel" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Excel</h2>
-<p>This is the import of “Affaires.xlsx”</p>
-<pre class="r"><code>library(readxl)
-affairs_xlsx &lt;- read_excel(&quot;./../RUltimateMaterial-main/data/Affairs.xlsx&quot;)
-View(affairs_xlsx)</code></pre>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Data can be reshaped by</p>
+<ul>
+<li><p>transforming columns into rows</p></li>
+<li><p>rows into columns</p></li>
+</ul>
+<p>This is directly combined with wide and tidy-data.</p>
+<pre class="r"><code>school_wide &lt;- data.frame(name = c(&quot;Clark&quot;, &quot;John&quot;, &quot;David&quot;),
+             science = c(2, 3, 4),
+             english = c(3, 1, 2),
+             history = c(3, 2, 1))</code></pre>
 </div>
-<div id="json" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> JSON</h2>
-<p>JSON is a JavaScript Object Notation</p>
-<pre class="r"><code>library(jsonlite)
-affairs_json &lt;- read_json(path = &quot;./../RUltimateMaterial-main/data/Affairs.JSON&quot;, simplifyVector = T)
-View(affairs_json)</code></pre>
+<div id="from-wide-to-tidy-data" class="section level1">
+<h1>From Wide to Tidy-Data</h1>
+<p>If you want to transform data from wide to tidy you can use functions
+from package <strong>tidyr</strong>. The relevant function is
+<em>gather()</em>. You need to provide some parameters</p>
+<ul>
+<li><p>a key parameter name, which represents the columns. I will call
+the resulting column subject</p></li>
+<li><p>a value parameter, which will be the name of the columns holding
+the values</p></li>
+<li><p>Finally, you need to define which columns to use for
+transformation. Here this is 2:4.</p></li>
+</ul>
+<pre class="r"><code>school_tidy &lt;- school_wide %&gt;%
+  gather(key = &quot;subject&quot;, value = &quot;grade&quot;, 2:4)
+school_tidy</code></pre>
+<pre><code>##    name subject grade
+## 1 Clark science     2
+## 2  John science     3
+## 3 David science     4
+## 4 Clark english     3
+## 5  John english     1
+## 6 David english     2
+## 7 Clark history     3
+## 8  John history     2
+## 9 David history     1</code></pre>
 </div>
-<div id="spss" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> SPSS</h2>
-<p>SPSS is a statistical program with its own file format.</p>
-<pre class="r"><code>library(foreign)
-affairs_spss &lt;- read.table(&quot;./../RUltimateMaterial-main/data/Affairs.sps&quot;)
-View(affairs_spss)</code></pre>
+<div id="from-tidy-to-wide-data" class="section level1">
+<h1>From Tidy to Wide-Data</h1>
+<p>The function with the opposite effect is <em>spread()</em>. You need
+to pass the exact same parameters:</p>
+<ul>
+<li><p>key: here you define the column name of the key-column</p></li>
+<li><p>value: you pass the chosen name of the column with the
+values</p></li>
+</ul>
+<pre class="r"><code>school_wide &lt;- school_tidy %&gt;%
+  spread(key = &quot;subject&quot;, value = &quot;grade&quot;)
+school_wide</code></pre>
+<pre><code>##    name english history science
+## 1 Clark       3       3       2
+## 2 David       2       1       4
+## 3  John       1       2       3</code></pre>
 </div>
-<div id="rda" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> RDA</h2>
-<p>RDA is a native R format, which provides compression. RDA saves the
-object names and can store more than just one object.</p>
-<pre class="r"><code>load(file = &quot;./../RUltimateMaterial-main/data/Affairs.RDA&quot;)</code></pre>
+<div id="why-are-there-two-different-formats" class="section level1">
+<h1>Why are there two different formats?</h1>
+<p>Both have their right to exist. Wide data typically comes from other
+programs. Excel or SPSS usually work with wide-data.</p>
+<p>For specific tasks it is better to transform wide-data (also called
+messy data) into tidy-data. I will show two examples.</p>
+<div id="example-1-calculate-group-averages" class="section level2">
+<h2>Example 1: Calculate group averages</h2>
+<p>Assume you want to calculate average class-grades per subject. With
+wide data you would do something like this:</p>
+<pre class="r"><code>mean(school_wide$english)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>mean(school_wide$science)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>mean(school_wide$history)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>You repeat your code several times, which should be avoided. If there
+are only three columns, that is ok, but imagine you want to calculate
+the average for 50 columns.</p>
+<p>Here is the solution based on tidy-data. You need to load
+<strong>dplyr</strong> package and make use of <em>group_by()</em> and
+<em>summarise()</em>. The code is much cleaner.</p>
+<p><strong>dplyr</strong> and <strong>tidyr</strong> are part of the
+tidyverse, which is a bunch of different packages, which rely on
+tidy-data.</p>
+<pre class="r"><code>school_tidy %&gt;%
+  group_by(subject) %&gt;%
+  summarise(mean_grade = mean(grade))</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   subject mean_grade
+##   &lt;chr&gt;        &lt;dbl&gt;
+## 1 english          2
+## 2 history          2
+## 3 science          3</code></pre>
 </div>
-<div id="rds" class="section level2" number="1.6">
-<h2><span class="header-section-number">1.6</span> RDS</h2>
-<p>RDS is the new native R format. RDS does not store the object name
-and can only contain one object. It has a slightly better compression
-rate compared to RDA.</p>
-<pre class="r"><code>affairs_rds &lt;- readRDS(&quot;./../RUltimateMaterial-main/data/Affairs.RDS&quot;)
-View(affairs_rds)</code></pre>
+<div id="example-2-plotting-with-ggplot2" class="section level2">
+<h2>Example 2: Plotting with ggplot2</h2>
+<p>Assume you want to plot the results with ggplot2. This is done with
+three lines of code. Trying to get a similar representation based on
+wide-data will result in much more complex code.</p>
+<pre class="r"><code>library(ggplot2)
+g &lt;- ggplot(data = school_tidy, 
+            mapping = aes(x = name, y = grade, fill = subject))
+g &lt;- g + geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;)
+g</code></pre>
+<p><img src="DataReshaping_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 </div>
-<div id="export" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Export</h1>
-<div id="csv-1" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> CSV</h2>
-<p>Export of “affairs_csv”</p>
-<pre class="r"><code>write.csv(x = affairs_csv, file = &quot;./export/Affairs.csv&quot;)</code></pre>
-</div>
-<div id="json-1" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> JSON</h2>
-<p>Export of “affairs_json”</p>
-<pre class="r"><code>write_json(x = affairs_json, path = &quot;./export/Affairs.json&quot;)</code></pre>
-</div>
-<div id="spss-1" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> SPSS</h2>
-<p>Export of “affairs_spss”</p>
-<pre class="r"><code>write.foreign(affairs_spss, datafile = &quot;./../RUltimateMaterial-main/data/Affairs.sps&quot;, codefile = &quot;./export/Affairs.code&quot;, package = &quot;SPSS&quot;)</code></pre>
-</div>
-<div id="rda-and-rds" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> RDA and RDS</h2>
-<p>RDA and RDS are native R formats, which store data compressed.</p>
-<pre class="r"><code>save(affairs_csv, file = &quot;./export/Affairs.RDA&quot;)
-saveRDS(affairs_csv, file = &quot;./export/Affairs.RDS&quot;)</code></pre>
-</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>You have seen how easy it is to transform data from wide to tidy, and
+reverse. You also saw some examples in which tidy-data has advantages
+over wide-data.</p>
 </div>
 
 
@@ -507,7 +542,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3",
+      selectors: "h1,h2",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {

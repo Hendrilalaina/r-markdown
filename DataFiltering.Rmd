@@ -36,4 +36,46 @@ diamonds[c(2, 12), ] # 2nd and 12th rows
 diamonds[c(4, 9), 'clarity'] # 4th and 9th rows, column 'clarity'
 ```
 
+Filter with **filter()**
+```{r}
+diamonds_filt <- diamonds %>% 
+  filter(x > 9) %>%
+  filter(cut %in% c('Ideal', 'Premium'))
+diamonds_filt
+```
+
+Filter with **sample_n()**
+```{r}
+diamonds_filt <- diamonds %>%
+  sample_n(20)
+diamonds_filt
+```
+
+Filter with **slice()**
+```{r}
+diamonds_filt <- diamonds %>%
+  slice(30:45)
+diamonds_filt
+```
+
+Filter with **top_n()**
+```{r}
+diamonds_filt <- diamonds %>%
+  top_n(5)
+diamonds_filt
+```
+
+## Filter columns
+
+Filter for columns with **select()**
+```{r}
+diamonds_filt <- diamonds %>%
+  select(clarity, color) # Only clarity and color columns
+diamonds_filt
+diamonds_filt <- diamonds %>%
+  select(-carat, -price) # All columns except carat and price
+diamonds_filt
+```
+
+
 

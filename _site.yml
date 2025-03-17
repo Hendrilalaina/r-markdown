@@ -6,5 +6,7 @@ navbar:
       href: index.html
     - text: "Import/Export"
       href: ImportData.html
+    - text: "DataFiltering"
+      href: DataFiltering.html
     - text: "About"
       href: about.html

@@ -1,0 +1,39 @@
+---
+title: "DataFiltering"
+author: "Hendrilalaina"
+date: "2025-03-17"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Packages
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+# Data preparation
+## Load data
+
+```{r}
+data("diamonds")
+summary(diamonds)
+```
+## Filtering Rows
+```{r}
+diamonds[8, ] # 8th row
+diamonds[c(2, 12), ] # 2nd and 12th rows
+diamonds[c(4, 9), 'clarity'] # 4th and 9th rows, column 'clarity'
+```
+
+

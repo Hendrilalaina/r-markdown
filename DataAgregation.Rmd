@@ -1,0 +1,53 @@
+---
+title: "DataAgregation"
+author: "Hendrilalaina"
+date: "2025-03-17"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyr)
+library(dplyr)
+```
+
+
+# Data Preparation
+```{r}
+data("population")
+population
+```
+
+We use the dataset "population", which shows the population for countries and the period.
+Data is stored in a tidy format.
+
+```{r}
+population %>%
+  head()
+```
+# Population in Madagascar
+
+```{r}
+population %>%
+  filter(country == 'Madagascar')
+```
+
+
+# Data Agregation
+We want to calculate the min, max and increase  of population for each country.
+At first, the data is grouped for the category that should be used for grouping. Then in the **summarise()** function, the logic is described.
+
+```{r}
+population %>%
+  group_by(country) %>%
+  summarise(min = min(population), max = max(population), increase = max - min, inc_percent = (max-min)/min*100)
+```
+

@@ -13,7 +13,7 @@
 
 <meta name="date" content="2025-03-17" />
 
-<title>Import/Export</title>
+<title>DataAgregation</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -362,89 +362,106 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Import/Export</h1>
+<h1 class="title toc-ignore">DataAgregation</h1>
 <h4 class="author">Hendrilalaina</h4>
 <h4 class="date">2025-03-17</h4>
 
 </div>
 
 
-<div id="import" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Import</h1>
-<div id="csv" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> CSV</h2>
-<p>This is the import of “Affairs.csv”</p>
-<pre class="r"><code>library(readr)
-affairs_csv &lt;- read_csv(file = &quot;./../RUltimateMaterial-main/data/Affairs.csv&quot;)</code></pre>
-<pre><code>## Rows: 601 Columns: 9
-## ── Column specification ──────────
-## Delimiter: &quot;,&quot;
-## chr (2): sex, child
-## dbl (7): age, ym, religious, education, occupation, rate, nbaffairs
+<pre class="r"><code>library(tidyr)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
 ## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>View(affairs_csv)</code></pre>
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<div id="data-preparation" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Data Preparation</h1>
+<pre class="r"><code>data(&quot;population&quot;)
+population</code></pre>
+<pre><code>## # A tibble: 4,060 × 3
+##    country      year population
+##    &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Afghanistan  1995   17586073
+##  2 Afghanistan  1996   18415307
+##  3 Afghanistan  1997   19021226
+##  4 Afghanistan  1998   19496836
+##  5 Afghanistan  1999   19987071
+##  6 Afghanistan  2000   20595360
+##  7 Afghanistan  2001   21347782
+##  8 Afghanistan  2002   22202806
+##  9 Afghanistan  2003   23116142
+## 10 Afghanistan  2004   24018682
+## # ℹ 4,050 more rows</code></pre>
+<p>We use the dataset “population”, which shows the population for
+countries and the period. Data is stored in a tidy format.</p>
+<pre class="r"><code>population %&gt;%
+  head()</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   country      year population
+##   &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Afghanistan  1995   17586073
+## 2 Afghanistan  1996   18415307
+## 3 Afghanistan  1997   19021226
+## 4 Afghanistan  1998   19496836
+## 5 Afghanistan  1999   19987071
+## 6 Afghanistan  2000   20595360</code></pre>
 </div>
-<div id="excel" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Excel</h2>
-<p>This is the import of “Affaires.xlsx”</p>
-<pre class="r"><code>library(readxl)
-affairs_xlsx &lt;- read_excel(&quot;./../RUltimateMaterial-main/data/Affairs.xlsx&quot;)
-View(affairs_xlsx)</code></pre>
+<div id="population-in-madagascar" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Population in
+Madagascar</h1>
+<pre class="r"><code>population %&gt;%
+  filter(country == &#39;Madagascar&#39;)</code></pre>
+<pre><code>## # A tibble: 19 × 3
+##    country     year population
+##    &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Madagascar  1995   13452526
+##  2 Madagascar  1996   13882646
+##  3 Madagascar  1997   14329239
+##  4 Madagascar  1998   14790245
+##  5 Madagascar  1999   15262817
+##  6 Madagascar  2000   15744811
+##  7 Madagascar  2001   16235767
+##  8 Madagascar  2002   16736029
+##  9 Madagascar  2003   17245275
+## 10 Madagascar  2004   17763367
+## 11 Madagascar  2005   18290394
+## 12 Madagascar  2006   18826126
+## 13 Madagascar  2007   19371023
+## 14 Madagascar  2008   19926785
+## 15 Madagascar  2009   20495695
+## 16 Madagascar  2010   21079532
+## 17 Madagascar  2011   21678934
+## 18 Madagascar  2012   22293914
+## 19 Madagascar  2013   22924851</code></pre>
 </div>
-<div id="json" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> JSON</h2>
-<p>JSON is a JavaScript Object Notation</p>
-<pre class="r"><code>library(jsonlite)
-affairs_json &lt;- read_json(path = &quot;./../RUltimateMaterial-main/data/Affairs.JSON&quot;, simplifyVector = T)
-View(affairs_json)</code></pre>
-</div>
-<div id="spss" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> SPSS</h2>
-<p>SPSS is a statistical program with its own file format.</p>
-<pre class="r"><code>library(foreign)
-affairs_spss &lt;- read.table(&quot;./../RUltimateMaterial-main/data/Affairs.sps&quot;)
-View(affairs_spss)</code></pre>
-</div>
-<div id="rda" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> RDA</h2>
-<p>RDA is a native R format, which provides compression. RDA saves the
-object names and can store more than just one object.</p>
-<pre class="r"><code>load(file = &quot;./../RUltimateMaterial-main/data/Affairs.RDA&quot;)</code></pre>
-</div>
-<div id="rds" class="section level2" number="1.6">
-<h2><span class="header-section-number">1.6</span> RDS</h2>
-<p>RDS is the new native R format. RDS does not store the object name
-and can only contain one object. It has a slightly better compression
-rate compared to RDA.</p>
-<pre class="r"><code>affairs_rds &lt;- readRDS(&quot;./../RUltimateMaterial-main/data/Affairs.RDS&quot;)
-View(affairs_rds)</code></pre>
-</div>
-</div>
-<div id="export" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Export</h1>
-<div id="csv-1" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> CSV</h2>
-<p>Export of “affairs_csv”</p>
-<pre class="r"><code>write.csv(x = affairs_csv, file = &quot;./export/Affairs.csv&quot;)</code></pre>
-</div>
-<div id="json-1" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> JSON</h2>
-<p>Export of “affairs_json”</p>
-<pre class="r"><code>write_json(x = affairs_json, path = &quot;./export/Affairs.json&quot;)</code></pre>
-</div>
-<div id="spss-1" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> SPSS</h2>
-<p>Export of “affairs_spss”</p>
-<pre class="r"><code>write.foreign(affairs_spss, datafile = &quot;./../RUltimateMaterial-main/data/Affairs.sps&quot;, codefile = &quot;./export/Affairs.code&quot;, package = &quot;SPSS&quot;)</code></pre>
-</div>
-<div id="rda-and-rds" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> RDA and RDS</h2>
-<p>RDA and RDS are native R formats, which store data compressed.</p>
-<pre class="r"><code>save(affairs_csv, file = &quot;./export/Affairs.RDA&quot;)
-saveRDS(affairs_csv, file = &quot;./export/Affairs.RDS&quot;)</code></pre>
-</div>
+<div id="data-agregation" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Data Agregation</h1>
+<p>We want to calculate the min, max and increase of population for each
+country. At first, the data is grouped for the category that should be
+used for grouping. Then in the <strong>summarise()</strong> function,
+the logic is described.</p>
+<pre class="r"><code>population %&gt;%
+  group_by(country) %&gt;%
+  summarise(min = min(population), max = max(population), increase = max - min, inc_percent = (max-min)/min*100)</code></pre>
+<pre><code>## # A tibble: 219 × 5
+##    country                  min      max increase inc_percent
+##    &lt;chr&gt;                  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;
+##  1 Afghanistan         17586073 30551674 12965601       73.7 
+##  2 Albania              3150143  3357858   207715        6.59
+##  3 Algeria             29315463 39208194  9892731       33.7 
+##  4 American Samoa         52874    59262     6388       12.1 
+##  5 Andorra                63799    81877    18078       28.3 
+##  6 Angola              12104952 21471618  9366666       77.4 
+##  7 Anguilla                9807    14300     4493       45.8 
+##  8 Antigua and Barbuda    68349    89985    21636       31.7 
+##  9 Argentina           34833168 41446246  6613078       19.0 
+## 10 Armenia              2963496  3223173   259677        8.76
+## # ℹ 209 more rows</code></pre>
 </div>
 
 

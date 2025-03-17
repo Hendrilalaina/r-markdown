@@ -28,23 +28,59 @@ We will work with dataset "babynames" from the package with the same name.
 ```{r}
 data("babynames")
 babynames %>% glimpse
+summary(babynames)
 ```
 
 # Filtering
 
 1. Filter for year 2015.
+```{r}
+babynames_filt <- babynames %>%
+  filter(year == 2015)
+babynames_filt
+```
+
 
 2. Filter for all names that have a capital letter "B". Help: take a look at "str_detect()".
+```{r}
+babynames_filt <- babynames %>%
+  filter(str_detect(name, 'B'))
+babynames_filt
+```
+
 
 3. Filter for male names.
+```{r}
+babynames_filt <- babynames %>%
+  filter(sex == 'M') %>%
+  select(name)
+babynames_filt
+```
+
 
 4. Take only names into account which have more than 100 observations.
+```{r}
+babynames_filt <- babynames %>%
+  filter(n > 100) %>%
+  select(name)
+babynames_filt
+```
+
 
 5. Show the Top 10 in decreasing order.
+```{r}
+babynames_filt <- babynames %>%
+  arrange(desc(n)) %>%
+  top_n(10)
+babynames_filt
+```
+
 
 6. Keep only the columns "name" and "prop"
 
 ```{r}
-# code here
+babynames_filt <- babynames %>%
+  select(name, prop)
+babynames_filt
 ```
 
